@@ -1,24 +1,50 @@
-import TaskForm from './components/TaskForm.jsx'
-import SearchBar from './components/SearchBar.jsx'
-import TaskFilters from './components/TaskFilters.jsx'
-import TaskStats from './components/TaskStats.jsx'
-import TaskList from './components/TaskList.jsx'
-
-const FAKE_TASKS = [
-  { id: 1, title: 'Apprendre useState', priority: 'HIGH', status: 'TODO' },
-  { id: 2, title: 'Lire la doc de useEffect', priority: 'MEDIUM', status: 'DONE' },
-  { id: 3, title: 'Ranger le bureau', priority: 'LOW', status: 'TODO' },
-]
+import { useState } from 'react'
+import TaskForm from './components/TaskForm'
+import SearchBar from './components/SearchBar'
+import TaskFilters from './components/TaskFilters'
+import TaskStats from './components/TaskStats'
+import TaskList from './components/TaskList'
+import { STATUS } from './constants/task'
 
 function App() {
+  const [tasks, setTasks] = useState([])
+
+  function addTask(title, priority) {
+    const newTask = {
+      id: crypto.randomUUID(),
+      title,
+      priority,
+      status: STATUS.TODO,
+    }
+    setTasks((prev) => [...prev, newTask])
+  }
+
+  function toggleTask(id) {
+    setTasks((prev) =>
+      prev.map((task) =>
+        task.id === id
+          ? { ...task, status: task.status === STATUS.DONE ? STATUS.TODO : STATUS.DONE }
+          : task
+      )
+    )
+  }
+
+  function deleteTask(id) {
+    setTasks((prev) => prev.filter((task) => task.id !== id))
+  }
+
+  const total = tasks.length
+  const done = tasks.filter((task) => task.status === STATUS.DONE).length
+  const remaining = total - done
+
   return (
     <main className="app">
       <h1>Task Manager</h1>
-      <TaskForm />
+      <TaskForm onAddTask={addTask} />
       <SearchBar />
       <TaskFilters filter="ALL" onChangeFilter={() => {}} />
-      <TaskStats total={5} done={2} remaining={3} />
-      <TaskList tasks={FAKE_TASKS} onToggle={() => {}} onDelete={() => {}} />
+      <TaskStats total={total} done={done} remaining={remaining} />
+      <TaskList tasks={tasks} onToggle={toggleTask} onDelete={deleteTask} />
     </main>
   )
 }
