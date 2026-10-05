@@ -7,7 +7,7 @@ function TaskForm({ onAddTask }) {
   const [error, setError] = useState('')
 
   function handleSubmit(event) {
-    event.preventDefault() // empêche le rechargement de la page
+    event.preventDefault()
 
     const cleanTitle = title.trim()
     if (cleanTitle === '') {
