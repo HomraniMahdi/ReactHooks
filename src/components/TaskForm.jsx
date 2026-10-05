@@ -1,10 +1,11 @@
-import { useState } from 'react'
+import { useState, useRef, memo } from 'react'
 import { PRIORITIES } from '../constants/task'
 
 function TaskForm({ onAddTask }) {
   const [title, setTitle] = useState('')
   const [priority, setPriority] = useState('MEDIUM')
   const [error, setError] = useState('')
+  const titleInputRef = useRef(null)
 
   function handleSubmit(event) {
     event.preventDefault()
@@ -12,18 +13,21 @@ function TaskForm({ onAddTask }) {
     const cleanTitle = title.trim()
     if (cleanTitle === '') {
       setError('Le titre ne peut pas être vide.')
+      titleInputRef.current.focus() // on aide l'utilisateur à corriger
       return
     }
 
     onAddTask(cleanTitle, priority)
     setTitle('')
     setError('')
+    titleInputRef.current.focus() // focus remis sur le champ titre
   }
 
   return (
     <>
       <form className="task-form" onSubmit={handleSubmit}>
         <input
+          ref={titleInputRef}
           type="text"
           placeholder="Titre de la tâche"
           value={title}
@@ -41,4 +45,4 @@ function TaskForm({ onAddTask }) {
   )
 }
 
-export default TaskForm
+export default memo(TaskForm)
