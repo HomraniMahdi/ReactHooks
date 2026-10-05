@@ -8,6 +8,7 @@ import { STATUS } from './constants/task'
 
 function App() {
   const [tasks, setTasks] = useState([])
+  const [searchValue, setSearchValue] = useState('')
 
   function addTask(title, priority) {
     const newTask = {
@@ -41,7 +42,7 @@ function App() {
     <main className="app">
       <h1>Task Manager</h1>
       <TaskForm onAddTask={addTask} />
-      <SearchBar />
+      <SearchBar value={searchValue} onChange={setSearchValue} />
       <TaskFilters filter="ALL" onChangeFilter={() => {}} />
       <TaskStats total={total} done={done} remaining={remaining} />
       <TaskList tasks={tasks} onToggle={toggleTask} onDelete={deleteTask} />

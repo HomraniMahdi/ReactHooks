@@ -15,10 +15,16 @@ function SearchBar({ value, onChange }) {
       <button
         type="button"
         className="btn"
-        onClick={() => searchInputRef.current.focus()}
+        onClick={() => {
+          if (searchInputRef.current) {
+            searchInputRef.current.focus()
+          }
+        }}
       >
         Focus search
       </button>
     </div>
   )
 }
+
+export default SearchBar
