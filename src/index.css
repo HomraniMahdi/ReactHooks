@@ -30,6 +30,12 @@ input, select, button {
   border-radius: 8px;
 }
 
+input:focus, select:focus {
+  outline: none;
+  border-color: var(--primary);
+  box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.25);
+}
+
 .task-form, .search { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
 .task-form input[type='text'], .search input { flex: 1; }
 .error { color: var(--danger); margin: -0.5rem 0 1rem; font-size: 0.9rem; }
@@ -40,6 +46,7 @@ input, select, button {
 .btn--primary:hover { background: #4338ca; }
 .btn--danger { color: var(--danger); }
 .btn--active { background: var(--primary); color: #fff; border-color: var(--primary); }
+.btn--active:hover { background: #4338ca; }
 
 .filters { display: flex; gap: 0.5rem; margin-bottom: 1rem; }
 .stats { color: var(--muted); }

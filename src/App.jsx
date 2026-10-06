@@ -9,6 +9,7 @@ import { STATUS } from './constants/task'
 function App() {
   const [tasks, setTasks] = useState([])
   const [searchValue, setSearchValue] = useState('')
+  const [filter, setFilter] = useState('ALL')
 
   function addTask(title, priority) {
     const newTask = {
@@ -38,14 +39,21 @@ function App() {
   const done = tasks.filter((task) => task.status === STATUS.DONE).length
   const remaining = total - done
 
+  const search = searchValue.trim().toLowerCase()
+  const visibleTasks = tasks.filter(
+    (task) =>
+      (filter === 'ALL' || task.status === filter) &&
+      task.title.toLowerCase().includes(search)
+  )
+
   return (
     <main className="app">
       <h1>Task Manager</h1>
       <TaskForm onAddTask={addTask} />
       <SearchBar value={searchValue} onChange={setSearchValue} />
-      <TaskFilters filter="ALL" onChangeFilter={() => {}} />
+      <TaskFilters filter={filter} onChangeFilter={setFilter} />
       <TaskStats total={total} done={done} remaining={remaining} />
-      <TaskList tasks={tasks} onToggle={toggleTask} onDelete={deleteTask} />
+      <TaskList tasks={visibleTasks} onToggle={toggleTask} onDelete={deleteTask} />
     </main>
   )
 }
